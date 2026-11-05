@@ -87,4 +87,16 @@ public class Cadastro {
         this.desRestricao = desRestricao;
     }
 
+    public void exibirDados() {
+        System.out.println("\n--- Dados do aluno ---");
+        System.out.println("Nome: " + nome);
+        System.out.println("CPF: " + cpf);
+        System.out.printf("Data de nascimento: " + dataNascimento);
+        System.out.println("Telefone: " + telefone);
+        System.out.println("E-mail: " + email);
+        System.out.println("Contato de emergência: " + contatoEmergencia);
+        System.out.println("Restrição médica: " + restricaoMedica);
+        System.out.println("Descrição da restrição médica: " + desRestricao);
+    }
+
 }
