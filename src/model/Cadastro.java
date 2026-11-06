@@ -99,4 +99,8 @@ public class Cadastro {
         System.out.println("Descrição da restrição médica: " + desRestricao);
     }
 
+    @Override
+    public String toString() {
+        return nome;
+    }
 }
