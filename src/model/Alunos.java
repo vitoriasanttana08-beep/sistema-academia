@@ -2,7 +2,7 @@ package model;
 
 import java.time.LocalDate;
 
-public class Cadastro {
+public class Alunos {
     private String nome;
     private String cpf;
     private LocalDate dataNascimento;
@@ -12,7 +12,7 @@ public class Cadastro {
     private Boolean restricaoMedica;
     private String desRestricao;
 
-    public Cadastro(String nome, String cpf, LocalDate dataNascimento, String telefone, String email, String contatoEmergencia, Boolean restricaoMedica, String desRestricao ) {
+    public Alunos(String nome, String cpf, LocalDate dataNascimento, String telefone, String email, String contatoEmergencia, Boolean restricaoMedica, String desRestricao ) {
         this.nome = nome;
         this.cpf = cpf;
         this.dataNascimento = dataNascimento;

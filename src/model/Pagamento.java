@@ -2,7 +2,7 @@ package model;
 
 import java.time.LocalDate;
 
-enum FormaPagamento {
+public enum FormaPagamento {
     PIX,
     DINHEIRO,
     CARTAO_CREDITO,
@@ -15,11 +15,11 @@ public class Pagamento {
     private String cpfAluno;
     private double valor;
     private LocalDate dataPagamento;
-    private String FormaPagamento formaPagamento;
+    private FormaPagamento formaPagamento;
     private String status;
     private String descricao;
 
-    public Pagamento(int id, String cpfAluno, double valor, LocalDate dataPagamento, String formaPagamento, String status, String descricao ) {
+    public Pagamento(int id, String cpfAluno, double valor, LocalDate dataPagamento, FormaPagamento formaPagamento, String status, String descricao ) {
         this.id = id;
         this.cpfAluno = cpfAluno;
         this.valor = valor;
@@ -61,11 +61,11 @@ public class Pagamento {
         this.dataPagamento = dataPagamento;
     }
 
-    public String getformaPagamento() {
+    public FormaPagamento getformaPagamento() {
         return formaPagamento;
     }
 
-    public void setformaPagamento(String formaPagamento) {
+    public void setformaPagamento(FormaPagamento formaPagamento) {
         this.formaPagamento = formaPagamento;
     }
 
