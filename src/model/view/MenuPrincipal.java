@@ -147,10 +147,21 @@ public class MenuPrincipal {
     }
 
     private static void cadastrarPagamento(Scanner sc, ArrayList<Pagamento> pagamentos) {
-        String id;
+        int id;
         boolean idExiste;
 
         do {
+            System.out.println("ID do pagamento: ");
+            id = sc.nextInt();
+            sc.nextLine();
+
+            idExiste = buscarPagamentoPorId(pagamentos, id) != null;
+
+            if (idExiste) {
+                System.out.println("Este ID já está cadastrado!");
+            }
+        } while (idExiste);
+            
             System.out.println("Selecione a forma de pagamento:");
             System.out.println("1- PIX");
             System.out.println("2- Dinheiro");
@@ -161,35 +172,51 @@ public class MenuPrincipal {
             int opcaoPagamento = sc.nextInt();
             sc.nextLine();
 
-            FormaPagamento formaPagamento;
+            Pagamento.FormaPagamento formaPagamento;
 
             switch (opcaoPagamento) {
                 case 1:
-                    formaPagamento = FormaPagamento.PIX;
+                    formaPagamento = Pagamento.FormaPagamento.PIX;
                     break;
                 case 2:
-                    formaPagamento = FormaPagamento.DINHEIRO;
+                    formaPagamento = Pagamento.FormaPagamento.DINHEIRO;
                     break;
                 case 3:
-                    formaPagamento = FormaPagamento.CARTAO_CREDITO;
+                    formaPagamento = Pagamento.FormaPagamento.CARTAO_CREDITO;
                     break;
                 case 4:
-                    formaPagamento = FormaPagamento.CARTAO_DEBITO;
+                    formaPagamento = Pagamento.FormaPagamento.CARTAO_DEBITO;
                     break;
                 case 5:
-                    formaPagamento = FormaPagamento.TRANSFERENCIA;
+                    formaPagamento = Pagamento.FormaPagamento.TRANSFERENCIA;
                     break;
                 default:
                     System.out.println("Opção inválida!");
                     return;
             }
+
+            System.out.println("Status de pagamento: ");
+            String status = sc.nextLine();
+            System.out.println("Descrição do pagamento: ");
+            String descricao = sc.nextLine();
+
+            Pagamento pagamento = new Pagamento(id, descricao, opcaoPagamento, null, formaPagamento, status, descricao)
         }
-    }
+    
 
     private static Alunos buscarAlunoPorCpf(ArrayList<Alunos> alunos, String cpf) {
         for (Alunos aluno : alunos) {
             if (aluno.getcpf().equals(cpf)) {
                 return aluno;
+            }
+        }
+        return null;
+    }
+
+    private static Plano buscarPlanoPorNome(ArrayList<Plano> planos, String nome) {
+        for (Plano plano : planos) {
+            if (plano.getnome().equals(plano)) {
+                return plano;
             }
         }
         return null;
