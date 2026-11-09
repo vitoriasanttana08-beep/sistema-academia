@@ -2,7 +2,9 @@ package model;
 
 import java.time.LocalDate;
 
-public enum FormaPagamento {
+public class Pagamento {
+    
+    public enum FormaPagamento {
     PIX,
     DINHEIRO,
     CARTAO_CREDITO,
@@ -10,7 +12,6 @@ public enum FormaPagamento {
     TRANSFERENCIA
 }
 
-public class Pagamento {
     private int id;
     private String cpfAluno;
     private double valor;

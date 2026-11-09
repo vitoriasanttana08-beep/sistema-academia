@@ -147,21 +147,18 @@ public class MenuPrincipal {
     }
 
     private static void cadastrarPagamento(Scanner sc, ArrayList<Pagamento> pagamentos) {
-        int id;
-        boolean idExiste;
-
-        do {
-            System.out.println("ID do pagamento: ");
-            id = sc.nextInt();
+        int id = pagamentos.size() + 1;
+ 
+            //Solicitar os dados do pagamento
+            System.out.println("CPF do aluno: ");
+            String cpfAluno = sc.nextLine();
+            System.out.println("Valor: ");
+            double valor = sc.nextDouble();
             sc.nextLine();
 
-            idExiste = buscarPagamentoPorId(pagamentos, id) != null;
-
-            if (idExiste) {
-                System.out.println("Este ID já está cadastrado!");
-            }
-        } while (idExiste);
+            LocalDate dataPagamento = LocalDate.now();
             
+            //Selecionar a forma de pagamento
             System.out.println("Selecione a forma de pagamento:");
             System.out.println("1- PIX");
             System.out.println("2- Dinheiro");
@@ -195,12 +192,17 @@ public class MenuPrincipal {
                     return;
             }
 
-            System.out.println("Status de pagamento: ");
-            String status = sc.nextLine();
+            //Definir o status do pagamento
+                String status = "PAGO";
+
+            //Solicitar descrição
             System.out.println("Descrição do pagamento: ");
             String descricao = sc.nextLine();
 
-            Pagamento pagamento = new Pagamento(id, descricao, opcaoPagamento, null, formaPagamento, status, descricao)
+            Pagamento pagamento = new Pagamento(id, cpfAluno, valor, dataPagamento, formaPagamento, status, descricao);
+            pagamentos.add(pagamento);
+
+            System.out.println("Pagamento cadastrado com sucesso!");
         }
     
 
