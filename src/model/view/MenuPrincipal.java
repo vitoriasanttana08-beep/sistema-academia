@@ -12,6 +12,63 @@ import model.Usuarios;
 
 public class MenuPrincipal {
 
+    private static void criarAdministrador(ArrayList<Usuarios> usuarios) {
+
+       Usuarios administrador = new Usuarios(
+    "José Alves",
+    "00894538912",
+    LocalDate.of(1996, 12, 05),
+    "(75) 9999-5569",
+    "josealves@academia.com",
+    "(75) 9854-7789",
+    "Praça da Matriz, 123, Centro",
+    "Administrador",
+    "admin",
+    "182542"
+);
+
+usuarios.add(administrador);
+
+            System.out.println("Administrador inicial criado com sucesso!");
+    }
+
+    private static Usuarios realizarLogin(Scanner sc, ArrayList<Usuarios> usuarios) {
+
+    while (true) {
+        System.out.println("\n==== LOGIN ====");
+        System.out.print("Login: ");
+        String login = sc.nextLine();
+        System.out.print("Senha: ");
+        String senha = sc.nextLine();
+        for (Usuarios usuario : usuarios) {
+            if (usuario.getlogin() != null && usuario.getsenha() != null
+                    && usuario.getlogin().equals(login)
+                    && usuario.getsenha().equals(senha)) {
+
+                System.out.println("\nBem-vindo(a), " + usuario.getnome() + "!");
+                return usuario;
+            }
+        }
+        System.out.println("\nLogin ou senha incorretos! Tente novamente.\n");
+    }
+}
+    private static boolean verificarPermissao(String cargo, int opcao) {
+
+    if (cargo.equalsIgnoreCase("ADMINISTRADOR")) {
+        return true;
+    }
+
+    if (cargo.equalsIgnoreCase("FUNCIONARIO")) {
+        return opcao >= 1 && opcao <= 15;
+    }
+
+    if (cargo.equalsIgnoreCase("TREINADOR")) {
+        return (opcao >= 1 && opcao <= 5) ||
+               (opcao >= 16 && opcao <= 20);
+    }
+
+    return false;
+}
     public static void main(String[] args) {
         
         Scanner sc = new Scanner(System.in);
@@ -19,29 +76,78 @@ public class MenuPrincipal {
         ArrayList<Pagamento> pagamentos = new ArrayList<>();
         ArrayList<Plano> planos = new ArrayList<>();
         ArrayList<Treino> treinos = new ArrayList<>();
-         ArrayList<Usuarios> usuarios = new ArrayList<>();
+
+        //Cria a lista de usuários do sistema
+        ArrayList<Usuarios> usuarios = new ArrayList<>();
+        //Cria o administrador inicial
+        criarAdministrador(usuarios);
+        //Solicita login e senha ao usuário
+        Usuarios usuarioLogado = realizarLogin(sc, usuarios);
+        //Verifica se o login foi realizado corretamente
+        if (usuarioLogado == null) {
+            System.out.println("Acesso não autorizado!");
+            sc.close();
+            return;
+        }
+        //Armazena o cargo do usuário para controlar as permissões
+        String cargo = usuarioLogado.getcargo();
 
         int opcao;
 
         do {
             System.out.println("\n======== Academia Corpo Em Movimento ========");
-            System.out.println("1 - Cadastrar alunos");
-            System.out.println("2 - Cadastrar plano");
-            System.out.println("2 - Cadastrar pagamento");
-            System.out.println("4 - Cadastrar treinos");
-            System.out.println("5 - Cadastrar usuário");
+            //Aluno
+            System.out.println("1 - Cadastrar aluno");
+            System.out.println("2 - Editar cadastro de aluno");
+            System.out.println("3 - Exibir todos os alunos");
+            System.out.println("4 - Consultar aluno");
+            System.out.println("5 - Excluir aluno");
+            System.out.println("===============================");
+            //Plano
+            System.out.println("6 - Cadastrar plano");
+            System.out.println("7 - Editar cadastro de plano");
+            System.out.println("8 - Exibir todos os planos");
+            System.out.println("9 - Consultar plano");
+            System.out.println("10 - Excluir plano");
+            System.out.println("===============================");
+            //Pagamento
+            System.out.println("11 - Cadastrar pagamento");
+            System.out.println("12 - Editar cadastro de pagamento");
+            System.out.println("13 - Exibir todos os pagamentos");
+            System.out.println("14 - Consultar pagamento");
+            System.out.println("15 - Excluir pagamento");
+            System.out.println("===============================");
+            //Treino
+            System.out.println("16 - Cadastrar treino");
+            System.out.println("17 - Editar cadastro de treino");
+            System.out.println("18 - Exibir todos os treinos");
+            System.out.println("19 - Consultar treino");
+            System.out.println("20 - Excluir treino");
+            System.out.println("===============================");
+            //Usuário
+            System.out.println("21 - Cadastrar usuário");
+            System.out.println("22 - Editar cadastro de usuário");
+            System.out.println("23 - Exibir todos os usuários");
+            System.out.println("24 - Consultar usuário");
+            System.out.println("25 - Excluir usuário");
+            System.out.println("===============================");
             System.out.println("0 - Sair");
             System.out.println("====================================");
             System.out.print("Escolha uma opção: ");
 
             opcao = sc.nextInt();
 
+            if (!verificarPermissao(cargo, opcao)) {
+    System.out.println("Acesso negado! Você não tem permissão.");
+    continue;
+}
+
             switch (opcao) {
                 case 1:
-                    cadastarAlunos(sc, alunos);
+                    Alunos.cadastarAlunos(sc, alunos);
                     break;
                 case 2:
-                    cadastrarPlano(sc, planos);
+                    Alunos.editarCadastro(sc, alunos);
                     break;
                 case 3:
                     cadastrarPagamento(sc, pagamentos);
@@ -49,8 +155,11 @@ public class MenuPrincipal {
                 case 4:
                     cadastrarTreinos(sc, treinos);
                     break;
-                case 5:
+                case 21:
                     cadastrarUsuarios(sc, usuarios);
+                    break;
+                    case 23:
+                    Usuarios.exibirUsuarios(usuarios);
                     break;
                 case 0:
                     System.out.println("Programa encerrado.");
@@ -64,54 +173,6 @@ public class MenuPrincipal {
         sc.close();
     }
 
-    private static void cadastarAlunos(Scanner sc, ArrayList<Alunos> alunos) {
-        // Implementação do cadastro de alunos
-        String cpf;
-        boolean cpfExiste;
-
-        do {
-            System.out.println("CPF: ");
-            cpf = sc.next();
-
-            cpfExiste = buscarAlunoPorCpf(alunos, cpf) != null;
-
-            if (cpf.length() != 11) {
-                System.out.println("CPF inválido!");
-            } else if (cpfExiste) {
-                System.out.println("Este CPF já está cadastrado!");
-            }
-        } while (cpf.length() != 11 || cpfExiste);
-
-        sc.nextLine();
-
-        //Solicitar os outros dados.
-        System.out.println("Nome: ");
-        String nome = sc.nextLine();
-        System.out.println("Data de nascimento (AAAA-MM-DD): ");
-        LocalDate dataNascimento = LocalDate.parse(sc.nextLine());
-        System.out.println("Telefone: ");
-        String telefone = sc.nextLine();
-        System.out.println("E-mail: ");
-        String email = sc.nextLine();
-        System.out.println("Contato de emergência: ");
-        String contatoEmergencia = sc.nextLine();
-        System.out.println("Possui restrição médica? (true/false): ");
-        boolean restricaoMedica = sc.nextBoolean();
-        sc.nextLine();
-
-        String desRestricao = "";
-
-        if (restricaoMedica) {
-            System.out.println("Descreva a restrição médica: ");
-            desRestricao = sc.nextLine();
-        }
-
-        Alunos aluno = new Alunos(nome, cpf, dataNascimento, telefone, email, contatoEmergencia, restricaoMedica, desRestricao);
-        alunos.add(aluno);
-        System.out.println("Aluno cadastrado com sucesso!");
-
-    }
-   
     private static void cadastrarPlano(Scanner sc, ArrayList<Plano> planos) {
         // Implementação do cadastro de plano
         String nome;
@@ -137,8 +198,9 @@ public class MenuPrincipal {
         int duracaoMeses = sc.nextInt();
         System.out.println("Valor do plano: ");
         double valor = sc.nextDouble();
-        System.out.println("O plano está: ");
-        boolean ativo = sc.nextBoolean();
+        System.out.println("O plano está ativo? (sim/não): ");
+        String resposta = sc.next();
+        boolean ativo = resposta.equalsIgnoreCase("sim");
         sc.nextLine();
 
         Plano plano = new Plano(nome, descricao, duracaoMeses, valor, ativo);
@@ -235,7 +297,7 @@ public class MenuPrincipal {
                 double carga = sc.nextDouble();
                 System.out.println("Descanso (segundos): ");
                 int descanso = sc.nextInt();
-                System.out.println("Treino ativo? (true/false): ");
+                System.out.println("Treino ativo? (ativo/inativo): ");
                 boolean ativo = sc.nextBoolean();
                 sc.nextLine();
 
@@ -278,26 +340,20 @@ public class MenuPrincipal {
                 String endereco = sc.nextLine();
                 System.out.println("Cargo: ");
                 String cargo = sc.nextLine();
+                System.out.println("Login: ");
+                String login = sc.nextLine();
+                System.out.println("Senha: ");
+                String senha = sc.nextLine();
 
-                sc.nextLine();
-
-                Usuarios usuario = new Usuarios(nome, cpf, dataNascimento, telefone, email, contatoEmergencia, endereco, cargo);
+                Usuarios usuario = new Usuarios(nome, cpf, dataNascimento, telefone, email, contatoEmergencia, endereco, cargo, login, senha);
                 usuarios.add(usuario);
                 System.out.println("Usuário cadastrado com sucesso!");
             }
 
-    private static Alunos buscarAlunoPorCpf(ArrayList<Alunos> alunos, String cpf) {
-        for (Alunos aluno : alunos) {
-            if (aluno.getcpf().equals(cpf)) {
-                return aluno;
-            }
-        }
-        return null;
-    }
 
     private static Plano buscarPlanoPorNome(ArrayList<Plano> planos, String nome) {
         for (Plano plano : planos) {
-            if (plano.getnome().equals(plano)) {
+            if (plano.getnome().equalsIgnoreCase(nome)) {
                 return plano;
             }
         }

@@ -1,6 +1,8 @@
 package model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Alunos {
     private String nome;
@@ -11,6 +13,7 @@ public class Alunos {
     private String contatoEmergencia;
     private Boolean restricaoMedica;
     private String desRestricao;
+    private boolean ativo;
 
     public Alunos(String nome, String cpf, LocalDate dataNascimento, String telefone, String email, String contatoEmergencia, Boolean restricaoMedica, String desRestricao ) {
         this.nome = nome;
@@ -56,7 +59,7 @@ public class Alunos {
     }
 
     public String getemail() {
-        return telefone;
+        return email;
     }
 
     public void setemail(String email) {
@@ -87,16 +90,151 @@ public class Alunos {
         this.desRestricao = desRestricao;
     }
 
-    public void exibirDados() {
-        System.out.print("--- Dados do aluno ---");
-        System.out.println("Nome: " + nome);
-        System.out.println("CPF: " + cpf);
-        System.out.printf("Data de nascimento: " + dataNascimento);
-        System.out.println("Telefone: " + telefone);
-        System.out.println("E-mail: " + email);
-        System.out.println("Contato de emergência: " + contatoEmergencia);
-        System.out.println("Restrição médica: " + restricaoMedica);
-        System.out.println("Descrição da restrição médica: " + desRestricao);
+    public boolean getativo() {
+        return ativo;
+    }
+
+    public void setativo(boolean ativo) {
+        this.ativo = ativo;
+    }
+
+    public static void cadastarAlunos(Scanner sc, ArrayList<Alunos> alunos) {
+        // Implementação do cadastro de alunos
+        String cpf;
+        boolean cpfExiste;
+
+        do {
+            System.out.println("CPF: ");
+            cpf = sc.next();
+
+            cpfExiste = buscarAlunoPorCpf(alunos, cpf) != null;
+
+            if (cpf.length() != 11) {
+                System.out.println("CPF inválido!");
+            } else if (cpfExiste) {
+                System.out.println("Este CPF já está cadastrado!");
+            }
+        } while (cpf.length() != 11 || cpfExiste);
+
+        sc.nextLine();
+
+        //Solicitar os outros dados.
+        System.out.println("Nome: ");
+        String nome = sc.nextLine();
+        System.out.println("Data de nascimento (AAAA-MM-DD): ");
+        LocalDate dataNascimento = LocalDate.parse(sc.nextLine());
+        System.out.println("Telefone: ");
+        String telefone = sc.nextLine();
+        System.out.println("E-mail: ");
+        String email = sc.nextLine();
+        System.out.println("Contato de emergência: ");
+        String contatoEmergencia = sc.nextLine();
+        System.out.println("Possui restrição médica? (sim/não): ");
+        boolean restricaoMedica = sc.nextBoolean();
+        sc.nextLine();
+
+        String desRestricao = "";
+
+        if (restricaoMedica) {
+            System.out.println("Descreva a restrição médica: ");
+            desRestricao = sc.nextLine();
+        }
+
+        Alunos aluno = new Alunos(nome, cpf, dataNascimento, telefone, email, contatoEmergencia, restricaoMedica, desRestricao);
+        alunos.add(aluno);
+        System.out.println("Aluno cadastrado com sucesso!");
+
+    }
+
+    public static void editarCadastro(Scanner sc, ArrayList<Alunos> alunos) {
+        
+        System.out.println("Digite o CPF do aluno(a) que deseja editar: ");
+        String cpf = sc.nextLine();
+
+        Alunos aluno = buscarAlunoPorCpf(alunos, cpf);
+
+        if (aluno == null) {
+            System.out.println("Aluno(a) não encontrado(a)!");
+            return;
+        }
+    System.out.println("\n===== EDITAR CADASTRO =====");
+    System.out.print("Novo nome: ");
+    aluno.setnome(sc.nextLine());
+    System.out.print("Nova data de nascimento (AAAA-MM-DD): ");
+    aluno.setdataNascimento(LocalDate.parse(sc.nextLine()));
+    System.out.print("Novo telefone: ");
+    aluno.settelefone(sc.nextLine());
+    System.out.print("Novo e-mail: ");
+    aluno.setemail(sc.nextLine());
+    System.out.print("Novo contato de emergência: ");
+    aluno.setcontatoEmergencia(sc.nextLine());
+    System.out.print("Possui restrição médica? (sim/não): ");
+    String resposta = sc.nextLine();
+    aluno.setrestricaoMedica(resposta.equalsIgnoreCase("sim"));
+
+    if (aluno.getrestricaoMedica()) {
+        System.out.print("Descreva a restrição médica: ");
+        aluno.setdesRestricao(sc.nextLine());
+    } else {
+        aluno.setdesRestricao("");
+    }
+
+    System.out.println("Cadastro do aluno atualizado com sucesso!");
+}
+
+public static void exibirAlunos(ArrayList<Alunos> alunos) {
+
+    if (alunos.isEmpty()) {
+        System.out.println("Nenhum aluno(a) cadastrado(a)!");
+        return;
+    }
+    System.out.println("\n===== Todos os alunos ====");
+    for (Alunos aluno : alunos) {
+        aluno.exibirAlunos(alunos);
+    }
+}
+
+public static void consultarAluno(Scanner sc, ArrayList<Alunos> alunos) {
+    System.out.println("Digite o CPF do aluno(a) que deseja consultar:");
+    String cpf = sc.nextLine();
+
+    Alunos aluno = buscarAlunoPorCpf(alunos, cpf);
+
+    if (aluno == null) {
+        System.out.println("Aluno(a) não encontrado(a)!");
+        return;
+    }
+    aluno.exibirAlunos(alunos);
+}
+
+public static void alterarStatusAluno(Scanner sc, ArrayList<Alunos> alunos) {
+
+    System.out.print("Digite o CPF do aluno(a): ");
+    String cpf = sc.nextLine();
+
+    Alunos aluno = buscarAlunoPorCpf(alunos, cpf);
+
+    if (aluno == null) {
+        System.out.println("Aluno(a) não encontrado(a)!");
+        return;
+    }
+
+    System.out.print("O aluno(a) está ativo(a)? (sim/não): ");
+    String resposta = sc.nextLine();
+
+    aluno.setativo(resposta.equalsIgnoreCase("sim"));
+
+    System.out.println("Situação do aluno(a) atualizada com sucesso!");
+}
+    
+
+    private static Alunos buscarAlunoPorCpf(ArrayList<Alunos> alunos, String cpf) {
+        for (Alunos aluno : alunos) {
+            if (aluno.getcpf().equals(cpf)) {
+                return aluno;
+            }
+        }
+        return null;
     }
 
     @Override

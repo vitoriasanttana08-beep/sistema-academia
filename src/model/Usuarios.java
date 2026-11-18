@@ -1,6 +1,7 @@
 package model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class Usuarios {
     private String nome;
@@ -11,8 +12,10 @@ public class Usuarios {
     private String contatoEmergencia;
     private String endereço;
     private String cargo;
+    private String login;
+    private String senha;
 
-public Usuarios(String nome, String cpf, LocalDate dataNascimento, String telefone, String email, String contatoEmergencia, String endereço, String cargo ) {
+public Usuarios(String nome, String cpf, LocalDate dataNascimento, String telefone, String email, String contatoEmergencia, String endereço, String cargo, String login, String senha ) {
     this.nome = nome;
     this.cpf = cpf;
     this.dataNascimento = dataNascimento;
@@ -21,6 +24,8 @@ public Usuarios(String nome, String cpf, LocalDate dataNascimento, String telefo
     this.contatoEmergencia = contatoEmergencia;
     this.endereço = endereço;
     this.cargo = cargo;
+    this.login = login;
+    this.senha = senha;
     }
 
     public String getnome() {
@@ -56,7 +61,7 @@ public Usuarios(String nome, String cpf, LocalDate dataNascimento, String telefo
     }
 
     public String getemail() {
-        return telefone;
+        return email;
     }
 
     public void setemail(String email) {
@@ -87,18 +92,44 @@ public Usuarios(String nome, String cpf, LocalDate dataNascimento, String telefo
         this.cargo = cargo;
     }
 
-    public void exibirDados() {
-        System.out.println("\n--- Dados do usuário ---");
-        System.out.println("Nome: " + nome);
-        System.out.println("CPF: " + cpf);
-        System.out.println("Data de nascimento: " + dataNascimento);
-        System.out.println("Telefone: " + telefone);
-        System.out.println("E-mail: " + email);
-        System.out.println("Contato de emergência: " + contatoEmergencia);
-        System.out.println("Endereço: " + endereço);
-        System.out.println("Cargo: " + cargo);
+    public String getlogin() {
+        return login;
     }
 
+    public void setlogin(String login) {
+        this.login = login;
+    }
+
+    public String getsenha() {
+        return senha;
+    }
+
+    public void setsenha(String senha) {
+        this.senha = senha;
+    }
+
+    public static void exibirUsuarios(ArrayList<Usuarios> usuarios) {
+
+    System.out.println("\n===== USUÁRIOS CADASTRADOS =====");
+
+    if (usuarios.isEmpty()) {
+        System.out.println("Nenhum usuário cadastrado.");
+        return;
+    }
+
+    for (Usuarios usuario : usuarios) {
+        System.out.println("\n--- Dados do usuário ---");
+        System.out.println("Nome: " + usuario.getnome());
+        System.out.println("CPF: " + usuario.getcpf());
+        System.out.println("Data de nascimento: " + usuario.getdataNascimento());
+        System.out.println("Telefone: " + usuario.gettelefone());
+        System.out.println("E-mail: " + usuario.getemail());
+        System.out.println("Contato de emergência: " + usuario.getcontatoEmergencia());
+        System.out.println("Endereço: " + usuario.getendereço());
+        System.out.println("Cargo: " + usuario.getcargo());
+        System.out.println("Login: " + usuario.getlogin());
+    }
+}
 
 
     @Override
