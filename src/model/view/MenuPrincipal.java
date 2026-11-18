@@ -50,7 +50,7 @@ public class MenuPrincipal {
                     cadastrarTreinos(sc, treinos);
                     break;
                 case 5:
-                    cadastrarUsuario(sc, usuarios);
+                    cadastrarUsuarios(sc, usuarios);
                     break;
                 case 0:
                     System.out.println("Programa encerrado.");
@@ -205,6 +205,86 @@ public class MenuPrincipal {
             System.out.println("Pagamento cadastrado com sucesso!");
         }
     
+            public static void cadastrarTreinos(Scanner sc, ArrayList<Treino> treinos) {
+                //Implementação de cadastro de treinos
+                String nome = "";
+                boolean nomeExiste;
+
+                do {
+                    System.out.println("Nome do treino: ");
+                    nomeExiste = sc.nextBoolean();
+
+                    nomeExiste = buscarTreinoPorNome(treinos, nome) != null;
+
+                    if (nome.trim().isEmpty()) {
+                        System.out.println("Nome inválido!");
+                    } else if (nomeExiste) {
+                        System.out.println("Este treino já está cadastrado!");
+                    }
+                } while (nome.trim().isEmpty() || nomeExiste);
+
+                System.out.println("Descrição: ");
+                String descricao = sc.nextLine();
+                System.out.println("Grupo muscular: ");
+                String grupoMuscular = sc.nextLine();
+                System.out.println("Quantidade de séries: ");
+                int series = sc.nextInt();
+                System.out.println("Quantidade de repetições: ");
+                int repeticoes = sc.nextInt();
+                System.out.println("Carga (kg): ");
+                double carga = sc.nextDouble();
+                System.out.println("Descanso (segundos): ");
+                int descanso = sc.nextInt();
+                System.out.println("Treino ativo? (true/false): ");
+                boolean ativo = sc.nextBoolean();
+                sc.nextLine();
+
+                Treino treino = new Treino(nome, descricao, grupoMuscular, series, repeticoes, carga, descanso, ativo);
+                treinos.add(treino);
+
+                System.out.println("Treino cadastrado com sucesso!");
+            }
+
+            private static void cadastrarUsuarios(Scanner sc, ArrayList<Usuarios> usuarios) {
+                String cpf;
+                boolean cpfExiste;
+
+                do {
+                    System.out.println("CPF: ");
+                    cpf = sc.nextLine();
+
+                    cpfExiste = buscarUsuariosPorCpf(usuarios, cpf) != null;
+
+                    if (cpf.length() != 11) {
+                        System.out.println("CPF inválida!");
+                    } else if (cpfExiste) {
+                        System.out.println("Este CPF já está cadastrado!");
+                    }
+                } while (cpf.length() != 11 || cpfExiste);
+
+                sc.nextLine();
+
+                System.out.println("Nome: ");
+                String nome = sc.nextLine();
+                System.out.println("Data de nascimento: ");
+                LocalDate dataNascimento = LocalDate.parse(sc.nextLine());
+                System.out.println("Telefone: ");
+                String telefone = sc.nextLine();
+                System.out.println("E-mail: ");
+                String email = sc.nextLine();
+                System.out.println("Contato de emergência: ");
+                String contatoEmergencia = sc.nextLine();
+                System.out.println("Endereço: ");
+                String endereco = sc.nextLine();
+                System.out.println("Cargo: ");
+                String cargo = sc.nextLine();
+
+                sc.nextLine();
+
+                Usuarios usuario = new Usuarios(nome, cpf, dataNascimento, telefone, email, contatoEmergencia, endereco, cargo);
+                usuarios.add(usuario);
+                System.out.println("Usuário cadastrado com sucesso!");
+            }
 
     private static Alunos buscarAlunoPorCpf(ArrayList<Alunos> alunos, String cpf) {
         for (Alunos aluno : alunos) {
@@ -219,6 +299,24 @@ public class MenuPrincipal {
         for (Plano plano : planos) {
             if (plano.getnome().equals(plano)) {
                 return plano;
+            }
+        }
+        return null;
+    }
+
+    private static Treino buscarTreinoPorNome(ArrayList<Treino> treinos, String nome) {
+        for (Treino treino : treinos) {
+            if (treino.getnome().equalsIgnoreCase(nome)) {
+                return treino;
+            }
+        }
+        return null;
+    }
+
+    private static Usuarios buscarUsuariosPorCpf(ArrayList<Usuarios> usuarios, String cpf) {
+        for (Usuarios usuario : usuarios) {
+            if (usuario.getcpf().equalsIgnoreCase(cpf)) {
+                return usuario;
             }
         }
         return null;

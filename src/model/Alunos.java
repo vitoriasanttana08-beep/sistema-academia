@@ -88,7 +88,7 @@ public class Alunos {
     }
 
     public void exibirDados() {
-        System.out.println("\n--- Dados do aluno ---");
+        System.out.print("--- Dados do aluno ---");
         System.out.println("Nome: " + nome);
         System.out.println("CPF: " + cpf);
         System.out.printf("Data de nascimento: " + dataNascimento);
