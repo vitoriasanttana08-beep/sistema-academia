@@ -3,8 +3,12 @@ package model;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.Serializable;
 
-public class Alunos {
+public class Alunos implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     private String nome;
     private String cpf;
     private LocalDate dataNascimento;
@@ -130,9 +134,8 @@ public class Alunos {
         System.out.println("Contato de emergência: ");
         String contatoEmergencia = sc.nextLine();
         System.out.println("Possui restrição médica? (sim/não): ");
-        boolean restricaoMedica = sc.nextBoolean();
-        sc.nextLine();
-
+        String resposta = sc.nextLine();
+        boolean restricaoMedica = resposta.equalsIgnoreCase("sim");
         String desRestricao = "";
 
         if (restricaoMedica) {
@@ -146,7 +149,7 @@ public class Alunos {
 
     }
 
-    public static void editarCadastro(Scanner sc, ArrayList<Alunos> alunos) {
+    public static void editarAluno(Scanner sc, ArrayList<Alunos> alunos) {
         
         System.out.println("Digite o CPF do aluno(a) que deseja editar: ");
         String cpf = sc.nextLine();
@@ -190,12 +193,12 @@ public static void exibirAlunos(ArrayList<Alunos> alunos) {
     }
     System.out.println("\n===== Todos os alunos ====");
     for (Alunos aluno : alunos) {
-        aluno.exibirAlunos(alunos);
+        aluno.exibirDados();
     }
 }
 
 public static void consultarAluno(Scanner sc, ArrayList<Alunos> alunos) {
-    System.out.println("Digite o CPF do aluno(a) que deseja consultar:");
+    System.out.println("Digite o CPF do aluno(a) que deseja consultar: ");
     String cpf = sc.nextLine();
 
     Alunos aluno = buscarAlunoPorCpf(alunos, cpf);
@@ -204,7 +207,7 @@ public static void consultarAluno(Scanner sc, ArrayList<Alunos> alunos) {
         System.out.println("Aluno(a) não encontrado(a)!");
         return;
     }
-    aluno.exibirAlunos(alunos);
+    aluno.exibirDados();
 }
 
 public static void alterarStatusAluno(Scanner sc, ArrayList<Alunos> alunos) {
@@ -227,6 +230,18 @@ public static void alterarStatusAluno(Scanner sc, ArrayList<Alunos> alunos) {
     System.out.println("Situação do aluno(a) atualizada com sucesso!");
 }
     
+public void exibirDados() {
+        System.out.print("\n--- Dados do aluno ---");
+        System.out.println("Nome: " + nome);
+        System.out.println("CPF: " + cpf);
+        System.out.println("Data de nascimento: " + dataNascimento);
+        System.out.println("Telefone: " + telefone);
+        System.out.println("E-mail: " + email);
+        System.out.println("Contato de emergência: " + contatoEmergencia);
+        System.out.println("Restrição médica: " + restricaoMedica);
+        System.out.println("Descrição da restrição médica: " + desRestricao);
+        System.out.println("Status: " + (ativo ? "Ativo" : "Inativo"));
+}
 
     private static Alunos buscarAlunoPorCpf(ArrayList<Alunos> alunos, String cpf) {
         for (Alunos aluno : alunos) {

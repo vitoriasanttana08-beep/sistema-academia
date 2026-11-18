@@ -2,8 +2,12 @@ package model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Scanner;
+import java.io.Serializable;
 
-public class Usuarios {
+public class Usuarios implements Serializable {
+
+    private static final long serialVersionUID = 1L;
     private String nome;
     private String cpf;
     private LocalDate dataNascimento;
@@ -130,6 +134,180 @@ public Usuarios(String nome, String cpf, LocalDate dataNascimento, String telefo
         System.out.println("Login: " + usuario.getlogin());
     }
 }
+
+public static void criarAdministrador(ArrayList<Usuarios> usuarios) {
+
+    if (usuarios.isEmpty()) {
+
+        Usuarios administrador = new Usuarios(
+            "José Alves",
+            "00894538912",
+            LocalDate.of(1996, 12, 5),
+            "(75) 9999-5569",
+            "josealves@academia.com",
+            "(75) 9854-7789",
+            "Praça da Matriz, 123, Centro",
+            "Administrador",
+            "admin",
+            "182542"
+        );
+
+        usuarios.add(administrador);
+
+        System.out.println("Administrador inicial criado com sucesso!");
+    }
+}
+
+public static void cadastrarUsuarios(Scanner sc, ArrayList<Usuarios> usuarios) {
+                String cpf;
+                boolean cpfExiste;
+
+                do {
+                    System.out.println("CPF: ");
+                    cpf = sc.nextLine();
+
+                    cpfExiste = buscarUsuariosPorCpf(usuarios, cpf) != null;
+
+                    if (cpf.length() != 11) {
+                        System.out.println("CPF inválida!");
+                    } else if (cpfExiste) {
+                        System.out.println("Este CPF já está cadastrado!");
+                    }
+                } while (cpf.length() != 11 || cpfExiste);
+
+                sc.nextLine();
+
+                System.out.println("Nome: ");
+                String nome = sc.nextLine();
+                System.out.println("Data de nascimento: ");
+                LocalDate dataNascimento = LocalDate.parse(sc.nextLine());
+                System.out.println("Telefone: ");
+                String telefone = sc.nextLine();
+                System.out.println("E-mail: ");
+                String email = sc.nextLine();
+                System.out.println("Contato de emergência: ");
+                String contatoEmergencia = sc.nextLine();
+                System.out.println("Endereço: ");
+                String endereco = sc.nextLine();
+                System.out.println("Cargo: ");
+                String cargo = sc.nextLine();
+                System.out.println("Login: ");
+                String login = sc.nextLine();
+                System.out.println("Senha: ");
+                String senha = sc.nextLine();
+
+                Usuarios usuario = new Usuarios(nome, cpf, dataNascimento, telefone, email, contatoEmergencia, endereco, cargo, login, senha);
+                usuarios.add(usuario);
+                System.out.println("Usuário cadastrado com sucesso!");
+            }
+
+public static void editarUsuario(Scanner sc, ArrayList<Usuarios> usuarios) {
+        
+        System.out.println("Digite o CPF do usuário(a) que deseja editar: ");
+        String cpf = sc.nextLine();
+
+        Usuarios usuario = buscarUsuariosPorCpf(usuarios, cpf);
+
+        if (usuarios == null) {
+            System.out.println("Usuário(a) não encontrado(a)!");
+            return;
+        }
+    System.out.println("\n===== Editar cadastro =====");
+    System.out.print("Novo nome: ");
+    usuario.setnome(sc.nextLine());
+    System.out.println("Novo CPF: ");
+    usuario.setcpf(sc.nextLine());
+    System.out.print("Nova data de nascimento (AAAA-MM-DD): ");
+    usuario.setdataNascimento(LocalDate.parse(sc.nextLine()));
+    System.out.print("Novo telefone: ");
+    usuario.settelefone(sc.nextLine());
+    System.out.print("Novo e-mail: ");
+    usuario.setemail(sc.nextLine());
+    System.out.print("Novo contato de emergência: ");
+    usuario.setcontatoEmergencia(sc.nextLine());
+    System.out.println("Novo endereço: ");
+    usuario.setendereço(sc.nextLine());
+    System.out.println("Novo cargo: ");
+    usuario.setcargo(sc.nextLine());
+    System.out.println("Novo login: ");
+    usuario.setlogin(sc.nextLine());
+    System.out.println("Nova senha: ");
+    usuario.setsenha(sc.nextLine());
+
+    System.out.println("Cadastro do usuário(a) atualizado com sucesso!");
+}
+
+public static void exibirUsuario(ArrayList<Usuarios> usuarios) {
+
+    if (usuarios.isEmpty()) {
+        System.out.println("Nenhum usuário(a) cadastrado(a)!");
+        return;
+    }
+    System.out.println("\n===== Todos os usuários ====");
+    for (Usuarios usuario : usuarios) {
+        usuario.exibirDados();
+    }
+}
+
+public static void consultarUsuario(Scanner sc, ArrayList<Usuarios> usuarios) {
+    System.out.println("Digite o CPF do usuário(a) que deseja consultar: ");
+    String cpf = sc.nextLine();
+
+    Usuarios usuario = buscarUsuariosPorCpf(usuarios, cpf);
+
+    if (usuarios == null) {
+        System.out.println("Usuário(a) não encontrado(a)!");
+        return;
+    }
+    usuario.exibirDados();
+}
+
+   public static void excluirUsuario(Scanner sc, ArrayList<Usuarios> usuarios) {
+
+    System.out.println("Digite o cpf do usuário(a) que deseja excluir: ");
+    String cpf = sc.nextLine();
+
+    Usuarios usuario = buscarUsuariosPorCpf(usuarios, cpf);
+
+    if (usuario == null) {
+        System.out.println("Usuário(a) não encontrado!");
+        return;
+    }
+
+    System.out.println("Usuário(a) encontrado(a): " + usuario.getnome());
+    System.out.print("Deseja realmente excluir? (sim/não): ");
+    String resposta = sc.nextLine();
+
+    if (resposta.equalsIgnoreCase("sim")) {
+        usuarios.remove(usuario);
+        System.out.println("Usuário(a) excluído(a) com sucesso!");
+    } else {
+        System.out.println("Exclusão cancelada.");
+    }
+}
+
+
+    public void exibirDados() {
+        System.out.println("\n--- Dados do usuário ---");
+        System.out.println("Nome: " + nome);
+        System.out.println("CPF: " + cpf);
+        System.out.println("Data de nascimento: " + dataNascimento);
+        System.out.println("Telefone: " + telefone);
+        System.out.println("E-mail: " + email);
+        System.out.println("Contato de emergência: " + contatoEmergencia);
+        System.out.println("Endereço: " + endereço);
+        System.out.println("Cargo: " + cargo);
+        System.out.println("Login: " + login);
+    }
+
+    private static Usuarios buscarUsuariosPorCpf(ArrayList<Usuarios> usuarios, String cpf) {
+        for (Usuarios usuario : usuarios) {
+            if (usuario.getcpf().equalsIgnoreCase(cpf)) {
+                return usuario;
+            }
+        }
+        return null;
+    }
 
 
     @Override
