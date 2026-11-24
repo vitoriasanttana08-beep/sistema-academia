@@ -106,6 +106,7 @@ public class MenuPrincipal {
 
             opcao = Integer.parseInt(sc.nextLine());
 
+        try {
             if (!verificarPermissao(cargo, opcao)) {
     System.out.println("Acesso negado! Você não tem permissão.");
     continue;
@@ -171,6 +172,7 @@ public class MenuPrincipal {
                     break;
                 case 20:
                     Treino.excluirTreino(sc, treinos);
+                    break;
                 case 21:
                     Usuarios.cadastrarUsuarios(sc, usuarios);
                     break;
@@ -200,6 +202,11 @@ public class MenuPrincipal {
     treinos,
     usuarios
 );
+
+    } catch (Exception e) {
+        System.out.println("Ocorreu um erro: " + e.getMessage());
+        System.out.println("Voltando ao menu principal...");
+    }
 
         } while (opcao != 0); 
             

@@ -139,7 +139,7 @@ public class Treino implements Serializable {
 
                 do {
                     System.out.println("Nome do treino: ");
-                    nomeExiste = sc.nextBoolean();
+                    nome = sc.nextLine();
 
                     nomeExiste = buscarTreinoPorNome(treinos, nome) != null;
 
