@@ -61,6 +61,9 @@ public class MenuPrincipal {
     // Armazena o cargo do usuário
     String cargo = usuarioLogado.getcargo();
 
+        if (cargo,equalsIgnoreCase("Treinador")) {
+            menuTreinador(sc, alunos, treinos, pagamentos);
+        } else {
         int opcao;
 
         do {
@@ -290,5 +293,6 @@ private static boolean verificarPermissao(String cargo, int opcao) {
         }
     }
     return false;
+}
 }
 }
