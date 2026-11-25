@@ -175,12 +175,13 @@ public class Pagamento implements Serializable {
     System.out.println("\n===== Editar cadastro =====");
     System.out.print("Novo id: ");
     pagamento.setid(sc.nextInt());
+    sc.nextLine();
     System.out.println("Novo CPF do aluno: ");
     pagamento.setcpfAluno(sc.nextLine());
-    System.out.print("Nova data de pagamento (AAAA-MM-DD): ");
+   System.out.print("Nova data de pagamento (AAAA-MM-DD): ");
     pagamento.setdataPagamento(LocalDate.parse(sc.nextLine()));
     //Forma de pagamento
-    System.out.print("Nova forma de pagamento: ");
+    System.out.print("Nova forma de pagamento: \n");
     System.out.println("1 - PIX");
     System.out.println("2 - Dinheiro");
     System.out.println("3 - Cartão de crédito");
@@ -222,7 +223,7 @@ public static void exibirPagamento(ArrayList<Pagamento> pagamentos) {
         System.out.println("Nenhum pagamento cadastrado!");
         return;
     }
-    System.out.println("\n===== Todos os usuários ====");
+    System.out.println("\n===== Todos os pagamentos ====");
     for (Pagamento pagamento : pagamentos) {
         pagamento.exibirDados();
     }
@@ -241,10 +242,10 @@ public static void consultarPagamento(Scanner sc, ArrayList<Pagamento> pagamento
     pagamento.exibirDados();
 }
 
-   public static void excluirPagamento(Scanner sc, ArrayList<Pagamento> pagamentos) {
+  public static void excluirPagamento(Scanner sc, ArrayList<Pagamento> pagamentos) {
 
     System.out.println("Digite o Id do pagamento que deseja excluir: ");
-    int id = sc.nextInt();
+    int id = Integer.parseInt(sc.nextLine());
 
     Pagamento pagamento = buscarPagamentoPorId(pagamentos, id);
 
@@ -254,14 +255,18 @@ public static void consultarPagamento(Scanner sc, ArrayList<Pagamento> pagamento
     }
 
     System.out.println("Pagamento encontrado: " + pagamento.getid());
-    System.out.print("Deseja realmente excluir? (sim/não): ");
-    String resposta = sc.nextLine();
+
+    System.out.println("Deseja realmente excluir? (sim/não): ");
+    String resposta = sc.nextLine().trim();
 
     if (resposta.equalsIgnoreCase("sim")) {
         pagamentos.remove(pagamento);
         System.out.println("Pagamento excluído com sucesso!");
-    } else {
+    } else if (resposta.equalsIgnoreCase("não") ||
+               resposta.equalsIgnoreCase("nao")) {
         System.out.println("Exclusão cancelada.");
+    } else {
+        System.out.println("Resposta inválida. Exclusão cancelada.");
     }
 }
 
@@ -280,3 +285,39 @@ public static void consultarPagamento(Scanner sc, ArrayList<Pagamento> pagamento
     }
 
 }
+  public static boolean verificarAcesso(String cpf, ArrayList<Pagamento> pagamentos) {
+
+        Pagamento ultimoPagamento = null;
+
+        for (Pagamento pagamento : pagamentos) {
+            if (pagamento.getcpfAluno().equals(cpf)
+                && pagamento.getstatus().equalsIgnoreCase("Pago")) {
+            if (ultimoPagamento == null ||
+                pagamento.getdataPagamento().isAfter(ultimoPagamento.getdataPagamento())) {
+                    ultimoPagamento = pagamento;
+                }
+            }
+        }
+            if (ultimoPagamento == null) {
+        System.out.println("ALERTA: Aluno sem pagamento registrado!");
+        System.out.println("Entrada na academia BLOQUEADA!");
+        return false;
+    }
+            long dias = java.time.temporal.ChronoUnit.DAYS.between(
+        ultimoPagamento.getdataPagamento(),
+        LocalDate.now()
+    );
+            if (dias > 10) {
+        System.out.println("\n================================");
+        System.out.println("       PAGAMENTO ATRASADO!");
+        System.out.println("================================");
+        System.out.println("O aluno não realizou o pagamento.");
+        System.out.println("Dias desde o último pagamento: " + dias);
+        System.out.println("ENTRADA NA ACADEMIA BLOQUEADA!");
+        System.out.println("Regularize seu pagamento para entrar.");
+        return false;
+    }
+
+        System.out.println("Pagamento em dia! Entrada liberada.");
+        return true;
+    }

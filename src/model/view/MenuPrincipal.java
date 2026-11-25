@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import model.Alunos;
+import model.ConfiguracaoTerminal;
 import model.Pagamento;
 import model.Persistencia;
 import model.Plano;
@@ -12,6 +13,8 @@ import model.Usuarios;
 
 public class MenuPrincipal {
     public static void main(String[] args) {
+
+        ConfiguracaoTerminal.configurar();
         
         Scanner sc = new Scanner(System.in);
 
@@ -120,10 +123,10 @@ public class MenuPrincipal {
                     Alunos.editarAluno(sc, alunos);
                     break;
                 case 3:
-                    Alunos.exibirAlunos(alunos);
+                    Alunos.exibirAlunos(alunos, pagamentos);
                     break;
                 case 4:
-                    Alunos.consultarAluno(sc, alunos);
+                    Alunos.consultarAluno(sc, alunos, pagamentos);
                     break;
                 case 5:
                     Alunos.alterarStatusAluno(sc, alunos);

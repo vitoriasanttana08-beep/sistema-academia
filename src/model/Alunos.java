@@ -17,8 +17,8 @@ public class Alunos implements Serializable {
     private String contatoEmergencia;
     private Boolean restricaoMedica;
     private String desRestricao;
-    private boolean ativo;
-
+    private boolean ativo = true;
+    
     public Alunos(String nome, String cpf, LocalDate dataNascimento, String telefone, String email, String contatoEmergencia, Boolean restricaoMedica, String desRestricao ) {
         this.nome = nome;
         this.cpf = cpf;
@@ -160,7 +160,7 @@ public class Alunos implements Serializable {
             System.out.println("Aluno(a) não encontrado(a)!");
             return;
         }
-    System.out.println("\n===== EDITAR CADASTRO =====");
+    System.out.println("\n===== Editar cadastro =====");
     System.out.print("Novo nome: ");
     aluno.setnome(sc.nextLine());
     System.out.print("Nova data de nascimento (AAAA-MM-DD): ");
@@ -185,7 +185,7 @@ public class Alunos implements Serializable {
     System.out.println("Cadastro do aluno atualizado com sucesso!");
 }
 
-public static void exibirAlunos(ArrayList<Alunos> alunos) {
+public static void exibirAlunos(ArrayList<Alunos> alunos, ArrayList<Pagamento> pagamentos) {
 
     if (alunos.isEmpty()) {
         System.out.println("Nenhum aluno(a) cadastrado(a)!");
@@ -193,11 +193,11 @@ public static void exibirAlunos(ArrayList<Alunos> alunos) {
     }
     System.out.println("\n===== Todos os alunos ====");
     for (Alunos aluno : alunos) {
-        aluno.exibirDados();
+        aluno.exibirDados(pagamentos);
     }
 }
 
-public static void consultarAluno(Scanner sc, ArrayList<Alunos> alunos) {
+public static void consultarAluno(Scanner sc, ArrayList<Alunos> alunos, ArrayList<Pagamento> pagamentos) {
     System.out.println("Digite o CPF do aluno(a) que deseja consultar: ");
     String cpf = sc.nextLine();
 
@@ -207,7 +207,7 @@ public static void consultarAluno(Scanner sc, ArrayList<Alunos> alunos) {
         System.out.println("Aluno(a) não encontrado(a)!");
         return;
     }
-    aluno.exibirDados();
+    aluno.exibirDados(pagamentos);
 }
 
 public static void alterarStatusAluno(Scanner sc, ArrayList<Alunos> alunos) {
@@ -229,9 +229,9 @@ public static void alterarStatusAluno(Scanner sc, ArrayList<Alunos> alunos) {
 
     System.out.println("Situação do aluno(a) atualizada com sucesso!");
 }
-    
+
 public void exibirDados() {
-        System.out.print("\n--- Dados do aluno ---");
+        System.out.print("\n--- Dados do aluno(a) ---\n");
         System.out.println("Nome: " + nome);
         System.out.println("CPF: " + cpf);
         System.out.println("Data de nascimento: " + dataNascimento);
@@ -242,6 +242,54 @@ public void exibirDados() {
         System.out.println("Descrição da restrição médica: " + desRestricao);
         System.out.println("Status: " + (ativo ? "Ativo" : "Inativo"));
 }
+    
+public void exibirDados(ArrayList<Pagamento> pagamentos) {
+        System.out.print("\n--- Dados do aluno(a) ---\n");
+        System.out.println("Nome: " + nome);
+        System.out.println("CPF: " + cpf);
+        System.out.println("Data de nascimento: " + dataNascimento);
+        System.out.println("Telefone: " + telefone);
+        System.out.println("E-mail: " + email);
+        System.out.println("Contato de emergência: " + contatoEmergencia);
+        System.out.println("Restrição médica: " + restricaoMedica);
+        System.out.println("Descrição da restrição médica: " + desRestricao);
+        System.out.println("Status: " + (ativo ? "Ativo" : "Inativo"));
+        
+        //Verificar situação do pagamento
+        Pagamento ultimoPagamento = null;
+
+        for (Pagamento pagamento : pagamentos) {
+            if (pagamento.getcpfAluno().equals(cpf)
+                && pagamento.getstatus().equalsIgnoreCase("PAGO")) {
+
+            if (ultimoPagamento == null ||
+                pagamento.getdataPagamento().isAfter(ultimoPagamento.getdataPagamento())) {
+
+                ultimoPagamento = pagamento;
+            }
+        }
+    }
+
+            if (ultimoPagamento == null) {
+
+        System.out.println("Situação do pagamento: SEM PAGAMENTO");
+
+            } else {
+
+            long dias = java.time.temporal.ChronoUnit.DAYS.between(
+            ultimoPagamento.getdataPagamento(),
+            LocalDate.now()
+        );
+
+            if (dias > 10) {
+            System.out.println("Situação do pagamento: ATRASADO");
+            System.out.println("ATENÇÃO: Pagamento pendente!");
+            } else {
+            System.out.println("Situação do pagamento: EM DIA");
+        }
+    }
+}
+
 
     private static Alunos buscarAlunoPorCpf(ArrayList<Alunos> alunos, String cpf) {
         for (Alunos aluno : alunos) {
