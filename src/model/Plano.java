@@ -146,7 +146,7 @@ public static void exibirPlanos(ArrayList<Plano> planos) {
 }
 
 public static void consultarPlano(Scanner sc, ArrayList<Plano> planos) {
-    System.out.println("Digite o nom do plano que deseja consultar: ");
+    System.out.println("Digite o nome do plano que deseja consultar: ");
     String nome = sc.nextLine();
 
     Plano plano = buscarPlanoPorNome(planos, nome);

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import model.Alunos;
-import model.ConfiguracaoTerminal;
 import model.Pagamento;
 import model.Persistencia;
 import model.Plano;
@@ -14,8 +13,6 @@ import model.Usuarios;
 public class MenuPrincipal {
     public static void main(String[] args) {
 
-        ConfiguracaoTerminal.configurar();
-        
         Scanner sc = new Scanner(System.in);
 
         //Carregar os dados salvos
@@ -242,19 +239,56 @@ public class MenuPrincipal {
 }
 private static boolean verificarPermissao(String cargo, int opcao) {
 
-    if (cargo.equalsIgnoreCase("Administrador")) {
+    if (cargo == null) {
+        return false;
+    }
+    cargo = cargo.trim();
+    // Todos os cargos podem sair
+    if (opcao == 0) {
         return true;
     }
-
+    // Administrador: acesso total
+    if (cargo.equalsIgnoreCase("Administrador")) {
+        return opcao >= 1 && opcao <= 25;
+    }
+    // Recepcionista
     if (cargo.equalsIgnoreCase("Recepcionista")) {
-        return opcao >= 1 && opcao <= 15;
-    }
+        switch (opcao) {
+            case 1:  // Cadastrar aluno
+            case 2:  // Editar aluno
+            case 3:  // Exibir alunos
+            case 4:  // Consultar aluno
+            case 5:  // Alterar status aluno
 
+            case 8:  // Exibir planos
+            case 9:  // Consultar plano
+
+            case 11: // Cadastrar pagamento
+            case 12: // Editar pagamento
+            case 13: // Exibir pagamentos
+            case 14: // Consultar pagamento
+                return true;
+
+            default:
+                return false;
+        }
+    }
+    // Treinador
     if (cargo.equalsIgnoreCase("Treinador")) {
-        return (opcao >= 1 && opcao <= 5) ||
-               (opcao >= 16 && opcao <= 20);
-    }
+        switch (opcao) {
+            case 4:  // Consultar aluno
 
+            case 16: // Cadastrar treino
+            case 17: // Editar treino
+            case 18: // Exibir treinos
+            case 19: // Consultar treino
+            case 20: // Excluir treino
+                return true;
+
+            default:
+                return false;
+        }
+    }
     return false;
 }
 }
