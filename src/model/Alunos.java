@@ -18,8 +18,9 @@ public class Alunos implements Serializable {
     private Boolean restricaoMedica;
     private String desRestricao;
     private boolean ativo = true;
+    private String tipoTreino;
     
-    public Alunos(String nome, String cpf, LocalDate dataNascimento, String telefone, String email, String contatoEmergencia, Boolean restricaoMedica, String desRestricao ) {
+    public Alunos(String nome, String cpf, LocalDate dataNascimento, String telefone, String email, String contatoEmergencia, Boolean restricaoMedica, String desRestricao, String tipoTreino ) {
         this.nome = nome;
         this.cpf = cpf;
         this.dataNascimento = dataNascimento;
@@ -28,6 +29,7 @@ public class Alunos implements Serializable {
         this.contatoEmergencia = contatoEmergencia;
         this.restricaoMedica = restricaoMedica;
         this.desRestricao = desRestricao;
+        this.tipoTreino = tipoTreino;
     }
 
     public String getnome() {
@@ -102,6 +104,14 @@ public class Alunos implements Serializable {
         this.ativo = ativo;
     }
 
+    public String getTipoTreino() {
+        return tipoTreino;
+    }
+
+    public void setTipoTreino(String tipoTreino) {
+        this.tipoTreino = tipoTreino;
+    }
+
     public static void cadastarAlunos(Scanner sc, ArrayList<Alunos> alunos) {
         // Implementação do cadastro de alunos
         String cpf;
@@ -143,8 +153,13 @@ public class Alunos implements Serializable {
             desRestricao = sc.nextLine();
         }
 
-        Alunos aluno = new Alunos(nome, cpf, dataNascimento, telefone, email, contatoEmergencia, restricaoMedica, desRestricao);
+        System.out.println("Digite o nome do treino:");
+        System.out.println("Exemplo: Treino A, Treino B, Treino C...");
+        String tipoTreino = sc.nextLine();
+
+        Alunos aluno = new Alunos(nome, cpf, dataNascimento, telefone, email, contatoEmergencia, restricaoMedica, desRestricao, tipoTreino);
         alunos.add(aluno);
+        aluno.setTipoTreino(tipoTreino);
         System.out.println("Aluno cadastrado com sucesso!");
 
     }
@@ -181,6 +196,10 @@ public class Alunos implements Serializable {
     } else {
         aluno.setdesRestricao("");
     }
+
+    System.out.println("Digite o nome do treino:");
+        System.out.println("Exemplo: Treino A, Treino B, Treino C...");
+        String tipoTreino = sc.nextLine();
 
     System.out.println("Cadastro do aluno atualizado com sucesso!");
 }
