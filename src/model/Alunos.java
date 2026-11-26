@@ -154,7 +154,6 @@ public class Alunos implements Serializable {
         }
 
         System.out.println("Digite o nome do treino:");
-        System.out.println("Exemplo: Treino A, Treino B, Treino C...");
         String tipoTreino = sc.nextLine();
 
         Alunos aluno = new Alunos(nome, cpf, dataNascimento, telefone, email, contatoEmergencia, restricaoMedica, desRestricao, tipoTreino);
@@ -198,8 +197,9 @@ public class Alunos implements Serializable {
     }
 
     System.out.println("Digite o nome do treino:");
-        System.out.println("Exemplo: Treino A, Treino B, Treino C...");
-        String tipoTreino = sc.nextLine();
+    String tipoTreino = sc.nextLine();
+
+    aluno.setTipoTreino(tipoTreino);
 
     System.out.println("Cadastro do aluno atualizado com sucesso!");
 }
@@ -249,18 +249,6 @@ public static void alterarStatusAluno(Scanner sc, ArrayList<Alunos> alunos) {
     System.out.println("Situação do aluno(a) atualizada com sucesso!");
 }
 
-public void exibirDados() {
-        System.out.print("\n--- Dados do aluno(a) ---\n");
-        System.out.println("Nome: " + nome);
-        System.out.println("CPF: " + cpf);
-        System.out.println("Data de nascimento: " + dataNascimento);
-        System.out.println("Telefone: " + telefone);
-        System.out.println("E-mail: " + email);
-        System.out.println("Contato de emergência: " + contatoEmergencia);
-        System.out.println("Restrição médica: " + restricaoMedica);
-        System.out.println("Descrição da restrição médica: " + desRestricao);
-        System.out.println("Status: " + (ativo ? "Ativo" : "Inativo"));
-}
     
 public void exibirDados(ArrayList<Pagamento> pagamentos) {
         System.out.print("\n--- Dados do aluno(a) ---\n");
@@ -273,6 +261,7 @@ public void exibirDados(ArrayList<Pagamento> pagamentos) {
         System.out.println("Restrição médica: " + restricaoMedica);
         System.out.println("Descrição da restrição médica: " + desRestricao);
         System.out.println("Status: " + (ativo ? "Ativo" : "Inativo"));
+        System.out.println("Treino: " + tipoTreino);
         
         //Verificar situação do pagamento
         Pagamento ultimoPagamento = null;

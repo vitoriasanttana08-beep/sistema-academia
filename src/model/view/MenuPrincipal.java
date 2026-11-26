@@ -10,9 +10,10 @@ import model.Plano;
 import model.Treino;
 import model.Usuarios;
 import model.Permissao;
-import model.view.MenuTreinador;
 
 public class MenuPrincipal {
+
+    @SuppressWarnings("unchecked")
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
@@ -42,6 +43,8 @@ public class MenuPrincipal {
         treinos = (ArrayList<Treino>) dados[3];
         usuarios = (ArrayList<Usuarios>) dados[4];
     }
+
+    Treino.cadastrarTreinoPadrao(treinos);
 
     // Cria o administrador inicial somente se não existir
     if (usuarios.isEmpty()) {

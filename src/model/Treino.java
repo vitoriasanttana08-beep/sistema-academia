@@ -20,7 +20,7 @@ public class Treino implements Serializable {
         private LocalDate dataInicio;
         private LocalDate dataRenovacao;
 
-        public Treino(String nome, String descricao, String grupoMuscular, int series, int repeticoes, double carga, int descanso, boolean ativo ) {
+        public Treino(String nome, String descricao, String grupoMuscular, int series, int repeticoes, double carga, int descanso, boolean ativo) {
             this.nome = nome;
             this.descricao = descricao;
             this.grupoMuscular = grupoMuscular;
@@ -238,6 +238,86 @@ public static void consultarTreino(Scanner sc, ArrayList<Treino> treinos) {
     }
     treino.exibirDados();
 }
+
+public static void cadastrarTreinoPadrao(ArrayList<Treino> treinos) {
+    
+    if (buscarTreinoPorNome(treinos, "Hipertrofia") == null) {
+        Treino hipertrofia = new Treino("Hipertrofia", "Treino focado no ganho de massa muscular.", "Peito, costas, pernas e braços",
+                                        4, 12, 20.0, 60, true);
+
+        treinos.add(hipertrofia);
+    }
+    if (buscarTreinoPorNome(treinos, "Condicionamento") == null) {
+        Treino condicionamento = new Treino("Condicionamento", "Treino voltado para condicionamento físico e gasto calórico.", "Corpo inteiro",
+                                            3, 15, 10.0, 45, true);
+
+        treinos.add(condicionamento);
+
+    }
+    if (buscarTreinoPorNome(treinos, "Resistência") == null) {
+        Treino resistencia = new Treino("Resistência", "Treino para melhorar a resistência muscular.", "Pernas, braços e abdomen",
+                                        3, 20, 5.0, 30, true);
+
+        treinos.add(resistencia);
+    }
+    System.out.println("Treinos padrão cadastrados com sucesso!\n");
+}
+
+public static void atribuirTreino(Scanner sc, ArrayList<Alunos> alunos, ArrayList<Treino> treinos) {
+
+    System.out.println("\n==== Atribuir Treino ao Aluno ====");
+    System.out.println("Digite o CPF do aluno: ");
+    String cpf = sc.nextLine();
+
+    Alunos alunoEncontrado = null;
+
+    for (Alunos aluno : alunos) {
+        if (aluno.getcpf().equals(cpf)) {
+            alunoEncontrado = aluno;
+            break;
+        }
+    }
+    if (alunoEncontrado == null) {
+        System.out.println("Aluno(a) não encontrado(a)!");
+        return;
+    }
+    if (treinos.isEmpty()) {
+        System.out.println("Nenhum treino cadastrado!");
+        return;
+    }
+    System.out.println("\nAluno: " + alunoEncontrado.getnome());
+
+    System.out.println("\n===== Treinos disponíveis =====");
+    for (int i = 0; i < treinos.size(); i++) {
+        Treino treino = treinos.get(i);
+
+        if (treino.getativo()) {
+            System.out.println((i + 1) + " - " + treino.getnome());
+        }
+    }
+
+    System.out.print("\nEscolha o número do treino: ");
+    int opcao = Integer.parseInt(sc.nextLine());
+
+    if (opcao < 1 || opcao > treinos.size()) {
+        System.out.println("Opção inválida!");
+        return;
+    }
+
+    Treino treinoEscolhido = treinos.get(opcao - 1);
+
+    if (!treinoEscolhido.getativo()) {
+        System.out.println("Esse treino está inativo!");
+        return;
+    }
+
+    alunoEncontrado.setTipoTreino(treinoEscolhido.getnome());
+
+    System.out.println("\nTreino atribuído com sucesso!");
+    System.out.println("Aluno(a): " + alunoEncontrado.getnome());
+    System.out.println("Treino atribuído: " + alunoEncontrado.getTipoTreino());
+}
+
 
 public static void excluirTreino(Scanner sc, ArrayList<Treino> treinos) {
 

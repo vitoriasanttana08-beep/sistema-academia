@@ -46,10 +46,10 @@ public class MenuTreinador {
                 Treino.consultarTreino(sc, treinos);
                 break;
             case 6:
-                Treino.excluirTreino(sc, treinos);
+                Treino.exibirTreino(treinos);
                 break;
             case 7:
-                System.out.println("Atribuir treino ao aluno");
+                Treino.atribuirTreino(sc, alunos, treinos);
                 break;
             case 8: 
                 System.out.println("Voltando ao menu principal...");
