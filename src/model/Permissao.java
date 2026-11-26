@@ -14,7 +14,7 @@ public static boolean verificarPermissao(String cargo, int opcao) {
     }
     // Administrador: acesso total
     if (cargo.equalsIgnoreCase("Administrador")) {
-        return opcao >= 1 && opcao <= 25;
+        return opcao >= 1 && opcao <= 27;
     }
     // Recepcionista
     if (cargo.equalsIgnoreCase("Recepcionista")) {
@@ -32,6 +32,8 @@ public static boolean verificarPermissao(String cargo, int opcao) {
             case 12: // Editar pagamento
             case 13: // Exibir pagamentos
             case 14: // Consultar pagamento
+            case 26: // Registrar entrada de aluno
+            case 27: // Consultar horário de pico
                 return true;
 
             default:

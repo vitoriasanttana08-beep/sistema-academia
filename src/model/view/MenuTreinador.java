@@ -58,6 +58,21 @@ public class MenuTreinador {
                 System.out.println("Opção inválida!");
                 break;
             }
+            if (opcao != 8) {
+                System.out.println("\nPrecione ENTER para continuar...");
+                sc.nextLine();
+                limparTerminal();
+            }
         } while (opcao != 8);
     }
+ public static void limparTerminal() {
+    try {
+        new ProcessBuilder("cmd", "/c", "cls")
+            .inheritIO()
+            .start()
+            .waitFor();
+    } catch (Exception e) {
+        System.out.println("Erro ao limpar o terminal.");
+    }
+}
 }

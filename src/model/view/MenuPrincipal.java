@@ -2,6 +2,9 @@ package model.view;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 import model.Alunos;
 import model.Pagamento;
@@ -10,6 +13,7 @@ import model.Plano;
 import model.Treino;
 import model.Usuarios;
 import model.Permissao;
+import model.Entrada;
 
 public class MenuPrincipal {
 
@@ -26,6 +30,7 @@ public class MenuPrincipal {
         ArrayList<Plano> planos;
         ArrayList<Treino> treinos;
         ArrayList<Usuarios> usuarios;
+        ArrayList<Entrada> entradas;
 
         if (dados == null) {
 
@@ -34,6 +39,7 @@ public class MenuPrincipal {
         planos = new ArrayList<>();
         treinos = new ArrayList<>();
         usuarios = new ArrayList<>();
+        entradas = new ArrayList<>();
 
     } else {
 
@@ -42,6 +48,12 @@ public class MenuPrincipal {
         planos = (ArrayList<Plano>) dados[2];
         treinos = (ArrayList<Treino>) dados[3];
         usuarios = (ArrayList<Usuarios>) dados[4];
+
+        if (dados.length > 5) {
+            entradas = (ArrayList<Entrada>) dados[5];
+        } else {
+            entradas = new ArrayList<>();
+        }
     }
 
     Treino.cadastrarTreinoPadrao(treinos);
@@ -69,7 +81,7 @@ public class MenuPrincipal {
         if (cargo.equalsIgnoreCase("Treinador")) {
             MenuTreinador.menuTreinador(sc, alunos, planos, treinos, pagamentos);
         } else {
-        int opcao;
+        int opcao = -1;
 
         do {
             System.out.println("\n======== Academia Corpo Em Movimento ========");
@@ -108,8 +120,12 @@ public class MenuPrincipal {
             System.out.println("24 - Consultar usuário");
             System.out.println("25 - Excluir usuário");
             System.out.println("===============================");
+            //Entrada
+            System.out.println("26 - Registrar entrada de aluno");
+            System.out.println("27 - Relatório de horários de pico");
+            System.out.println("===============================");
             System.out.println("0 - Sair");
-            System.out.println("====================================");
+            System.out.println("===============================");
             System.out.print("Escolha uma opção: ");
 
             opcao = Integer.parseInt(sc.nextLine());
@@ -196,11 +212,22 @@ public class MenuPrincipal {
                 case 25: 
                     Usuarios.excluirUsuario(sc, usuarios);
                     break;
+                case  26:
+                    Entrada.registrarEntrada(sc, alunos, pagamentos, entradas);
+                    break;
+                case 27:
+                    Entrada.relatorioHorariosPico(entradas);
                 case 0:
                     System.out.println("Programa encerrado.");
                     break;
                 default:
                     System.out.println("Opção inválida.");
+            }
+
+            if (opcao != 0) {
+                System.out.println("\nPrecione ENTER para continuar...");
+                sc.nextLine();
+                limparTerminal();
             }
     //Salva as listas após cada operação
     Persistencia.salvar(
@@ -208,8 +235,8 @@ public class MenuPrincipal {
     pagamentos,
     planos,
     treinos,
-    usuarios
-);
+    usuarios,
+    entradas);
 
     } catch (Exception e) {
         System.out.println("Ocorreu um erro: " + e.getMessage());
@@ -243,6 +270,17 @@ public class MenuPrincipal {
         }
 
         System.out.println("\nLogin ou senha incorretos! Tente novamente.\n");
+    }
+}
+
+public static void limparTerminal() {
+    try {
+        new ProcessBuilder("cmd", "/c", "cls")
+            .inheritIO()
+            .start()
+            .waitFor();
+    } catch (Exception e) {
+        System.out.println("Erro ao limpar o terminal.");
     }
 }
 }

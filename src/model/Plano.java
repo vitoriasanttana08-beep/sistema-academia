@@ -126,11 +126,12 @@ public class Plano implements Serializable {
     plano.setduracaoMeses(sc.nextInt());
     System.out.print("Novo valor: ");
     plano.setvalor(sc.nextDouble());
-    System.out.print("Novo status (Ativo/Inativo): ");
-    String resposta = sc.nextLine();
-    plano.setativo(resposta.equalsIgnoreCase("Ativo"));
+     System.out.println("Novo status: (sim/não): ");
+    String resposta = sc.next();
+    boolean ativo = resposta.equalsIgnoreCase("sim");
+    sc.nextLine();
 
-    System.out.println("Cadastro do usuário(a) atualizado com sucesso!");
+    System.out.println("Cadastro do plano atualizado com sucesso!");
 }
 
 public static void exibirPlanos(ArrayList<Plano> planos) {

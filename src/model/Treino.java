@@ -347,6 +347,4 @@ public static void excluirTreino(Scanner sc, ArrayList<Treino> treinos) {
     public String toString() {
         return nome;
     }
-
-
     }
