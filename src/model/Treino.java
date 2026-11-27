@@ -162,9 +162,19 @@ public class Treino implements Serializable {
                 double carga = sc.nextDouble();
                 System.out.println("Descanso (segundos): ");
                 int descanso = sc.nextInt();
-                System.out.println("Treino ativo? (ativo/inativo): ");
-                boolean ativo = sc.nextBoolean();
                 sc.nextLine();
+                System.out.println("Treino ativo? (Sim/Não): ");
+                String resposta = sc.nextLine();
+                boolean ativo;
+
+                if (resposta.equalsIgnoreCase("sim")) {
+                    ativo = true;
+                } else if (resposta.equalsIgnoreCase("não") || resposta.equalsIgnoreCase("nao")) {
+                    ativo = false;
+                } else {
+                System.out.println("Resposta inválida! Digite Sim ou Não.");
+                return;
+                }
 
                 Treino treino = new Treino(nome, descricao, grupoMuscular, series, repeticoes, carga, descanso, ativo);
                 treinos.add(treino);
@@ -207,9 +217,19 @@ public class Treino implements Serializable {
         treino.setcarga(sc.nextDouble());
         System.out.println("Novo descanso (segundos): ");
         treino.setdescanso(sc.nextInt());
-        System.out.println("Novo status do treino: (ativo/inativo): ");
-        String resposta = sc.nextLine();
-        treino.setativo(resposta.equalsIgnoreCase("ativo"));
+        sc.nextLine();
+        System.out.println("Treino ativo? (Sim/Não): ");
+                String resposta = sc.nextLine();
+                boolean ativo;
+
+                if (resposta.equalsIgnoreCase("sim")) {
+                    ativo = true;
+                } else if (resposta.equalsIgnoreCase("não") || resposta.equalsIgnoreCase("nao")) {
+                    ativo = false;
+                } else {
+                System.out.println("Resposta inválida! Digite Sim ou Não.");
+                return;
+                }
 
         System.out.println("Cadastro do treino atualizado com sucesso!");
     }
@@ -272,6 +292,8 @@ public static void atribuirTreino(Scanner sc, ArrayList<Alunos> alunos, ArrayLis
     Alunos alunoEncontrado = null;
 
     for (Alunos aluno : alunos) {
+        String cpfCadastrado = aluno.getcpf().replaceAll("\\D", "");
+        String cpfDigitado = cpf.replaceAll("\\D", "");
         if (aluno.getcpf().equals(cpf)) {
             alunoEncontrado = aluno;
             break;

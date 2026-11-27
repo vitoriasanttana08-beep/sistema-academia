@@ -218,7 +218,7 @@ public class Pagamento implements Serializable {
     sc.nextLine();
     System.out.println("Novo CPF do aluno: ");
     pagamento.setcpfAluno(sc.nextLine());
-   System.out.print("Nova data de pagamento (AAAA-MM-DD): ");
+    System.out.print("Nova data de pagamento (AAAA-MM-DD): ");
     pagamento.setdataPagamento(LocalDate.parse(sc.nextLine()));
     //Forma de pagamento
     System.out.print("Nova forma de pagamento: \n");
@@ -302,7 +302,7 @@ public static void exibirPagamento(ArrayList<Pagamento> pagamentos) {
 
 public static void consultarPagamento(Scanner sc, ArrayList<Pagamento> pagamentos) {
     System.out.println("Digite o Id do pagamento que deseja consultar: ");
-    int id = sc.nextInt();
+    int id = Integer.parseInt(sc.nextLine());
 
     Pagamento pagamento = buscarPagamentoPorId(pagamentos, id);
 

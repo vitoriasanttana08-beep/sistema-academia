@@ -152,6 +152,7 @@ if (situacao.equalsIgnoreCase("ATRASADO")
     }
     System.out.println("Quantidade de entradas no pico: " + maior);
 }
+
  @Override
     public String toString() {
         return cpfAluno;
