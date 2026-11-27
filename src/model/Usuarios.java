@@ -137,7 +137,7 @@ public Usuarios(String nome, String cpf, LocalDate dataNascimento, String telefo
 
 public static void criarAdministrador(ArrayList<Usuarios> usuarios) {
 
-    if (usuarios.isEmpty()) {
+    if (buscarUsuarioPorLogin(usuarios, "admin") == null) {
 
         Usuarios administrador = new Usuarios(
             "José Alves",
@@ -153,8 +153,52 @@ public static void criarAdministrador(ArrayList<Usuarios> usuarios) {
         );
 
         usuarios.add(administrador);
-
         System.out.println("Administrador inicial criado com sucesso!");
+    }
+}
+
+public static void criarRecepcionista(ArrayList<Usuarios> usuarios) {
+    
+    if (buscarUsuarioPorLogin(usuarios, "recep") == null) {
+
+        Usuarios recepcionista = new Usuarios(
+            "Ana Duarte",
+            "11111111111",
+            LocalDate.of(2000, 05, 21),
+            "(75) 1234-5678",
+            "ana@academia.com",
+            "(75) 2456-9910",
+            "Praça da Imperatriz, 15, Centro",
+            "Recepcionista",
+            "recep",
+            "230508"
+        );
+
+        usuarios.add(recepcionista);
+        System.out.println("Recepcionista criada com sucesso!");
+    }
+}
+
+public static void criarTreinador(ArrayList<Usuarios> usuarios) {
+    
+    if (buscarUsuarioPorLogin(usuarios, "trei") == null) {
+
+        Usuarios treinador = new Usuarios(
+            "Hugo Carvalho",
+            "23467298711",
+            LocalDate.of(2000, 05, 12),
+            "(75) 7768-9756",
+            "hugoc@academia.com",
+            "(75) 9987-5312",
+            "Avenida Nossa Senhora da Rosa Mística, 159, João Paulo II",
+            "Treinador",
+            "trei",
+            "121314"
+        );
+
+        usuarios.add(treinador);
+
+        System.out.println("Treinador criado com sucesso!");
     }
 }
 
@@ -174,8 +218,6 @@ public static void cadastrarUsuarios(Scanner sc, ArrayList<Usuarios> usuarios) {
                         System.out.println("Este CPF já está cadastrado!");
                     }
                 } while (cpf.length() != 11 || cpfExiste);
-
-                sc.nextLine();
 
                 System.out.println("Nome: ");
                 String nome = sc.nextLine();
@@ -299,6 +341,18 @@ public static void consultarUsuario(Scanner sc, ArrayList<Usuarios> usuarios) {
         System.out.println("Cargo: " + cargo);
         System.out.println("Login: " + login);
     }
+
+    private static Usuarios buscarUsuarioPorLogin(
+        ArrayList<Usuarios> usuarios, String login) {
+
+    for (Usuarios usuario : usuarios) {
+        if (usuario.getlogin().equalsIgnoreCase(login)) {
+            return usuario;
+        }
+    }
+
+    return null;
+}
 
     private static Usuarios buscarUsuariosPorCpf(ArrayList<Usuarios> usuarios, String cpf) {
         for (Usuarios usuario : usuarios) {

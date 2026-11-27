@@ -19,6 +19,7 @@ public class Alunos implements Serializable {
     private String desRestricao;
     private boolean ativo = true;
     private String tipoTreino;
+    private String situacaoPagamento;
     
     public Alunos(String nome, String cpf, LocalDate dataNascimento, String telefone, String email, String contatoEmergencia, Boolean restricaoMedica, String desRestricao, String tipoTreino ) {
         this.nome = nome;
@@ -110,6 +111,14 @@ public class Alunos implements Serializable {
 
     public void setTipoTreino(String tipoTreino) {
         this.tipoTreino = tipoTreino;
+    }
+
+    public String getSituacaoProblema() {
+        return situacaoPagamento;
+    }
+
+    public void setSituacaoProblema(String situacaoPagamento) {
+        this.situacaoPagamento = situacaoPagamento;
     }
 
     public static void cadastarAlunos(Scanner sc, ArrayList<Alunos> alunos) {
@@ -249,6 +258,39 @@ public static void alterarStatusAluno(Scanner sc, ArrayList<Alunos> alunos) {
     System.out.println("Situação do aluno(a) atualizada com sucesso!");
 }
 
+public String calcularSituacaoPagamento(ArrayList<Pagamento> pagamentos) {
+
+    Pagamento ultimoPagamento = null;
+
+    for (Pagamento pagamento : pagamentos) {
+
+        if (pagamento.getcpfAluno().equals(cpf)
+                && pagamento.getstatus().equalsIgnoreCase("PAGO")) {
+
+            if (ultimoPagamento == null ||
+                    pagamento.getdataPagamento().isAfter(
+                            ultimoPagamento.getdataPagamento())) {
+
+                ultimoPagamento = pagamento;
+            }
+        }
+    }
+
+    if (ultimoPagamento == null) {
+        return "SEM PAGAMENTO";
+    }
+
+    long dias = java.time.temporal.ChronoUnit.DAYS.between(
+            ultimoPagamento.getdataPagamento(),
+            LocalDate.now()
+    );
+
+    if (dias > 10) {
+        return "ATRASADO";
+    } else {
+        return "EM DIA";
+    }
+}
     
 public void exibirDados(ArrayList<Pagamento> pagamentos) {
         System.out.print("\n--- Dados do aluno(a) ---\n");
@@ -263,45 +305,18 @@ public void exibirDados(ArrayList<Pagamento> pagamentos) {
         System.out.println("Status: " + (ativo ? "Ativo" : "Inativo"));
         System.out.println("Treino: " + tipoTreino);
         
-        //Verificar situação do pagamento
-        Pagamento ultimoPagamento = null;
+        String situacao = calcularSituacaoPagamento(pagamentos);
 
-        for (Pagamento pagamento : pagamentos) {
-            if (pagamento.getcpfAluno().equals(cpf)
-                && pagamento.getstatus().equalsIgnoreCase("PAGO")) {
+        System.out.println("Situação do pagamento: " + situacao);
 
-            if (ultimoPagamento == null ||
-                pagamento.getdataPagamento().isAfter(ultimoPagamento.getdataPagamento())) {
-
-                ultimoPagamento = pagamento;
-            }
-        }
-    }
-
-            if (ultimoPagamento == null) {
-
-        System.out.println("Situação do pagamento: SEM PAGAMENTO");
-
-            } else {
-
-            long dias = java.time.temporal.ChronoUnit.DAYS.between(
-            ultimoPagamento.getdataPagamento(),
-            LocalDate.now()
-        );
-
-            if (dias > 10) {
-            System.out.println("Situação do pagamento: ATRASADO");
-            System.out.println("ATENÇÃO: Pagamento pendente!");
-            } else {
-            System.out.println("Situação do pagamento: EM DIA");
-        }
+        if (situacao.equals("ATRASADO")) {
+        System.out.println("ATENÇÃO: Pagamento pendente!");
     }
 }
 
-
     private static Alunos buscarAlunoPorCpf(ArrayList<Alunos> alunos, String cpf) {
         for (Alunos aluno : alunos) {
-            if (aluno.getcpf().equals(cpf)) {
+            if (aluno.getcpf().trim().equals(cpf.trim())) {
                 return aluno;
             }
         }

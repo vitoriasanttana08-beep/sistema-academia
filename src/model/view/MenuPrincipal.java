@@ -58,10 +58,9 @@ public class MenuPrincipal {
 
     Treino.cadastrarTreinoPadrao(treinos);
 
-    // Cria o administrador inicial somente se não existir
-    if (usuarios.isEmpty()) {
-        Usuarios.criarAdministrador(usuarios);
-    }
+    Usuarios.criarAdministrador(usuarios);
+    Usuarios.criarRecepcionista(usuarios);
+    Usuarios.criarTreinador(usuarios);
 
     // Solicita login e senha
     Usuarios usuarioLogado = realizarLogin(sc, usuarios);
@@ -69,7 +68,7 @@ public class MenuPrincipal {
     if (usuarioLogado == null) {
         System.out.println("Acesso não autorizado!");
 
-        Persistencia.salvar(alunos, pagamentos, planos, treinos, usuarios);
+        Persistencia.salvar(alunos, pagamentos, planos, treinos, usuarios, entradas);
 
         sc.close();
         return;
@@ -217,6 +216,7 @@ public class MenuPrincipal {
                     break;
                 case 27:
                     Entrada.relatorioHorariosPico(entradas);
+                    break;
                 case 0:
                     System.out.println("Programa encerrado.");
                     break;

@@ -62,6 +62,7 @@ public class Plano implements Serializable {
         this.ativo = ativo;
     }
 
+
     public void exibirDados() {
         System.out.println("\n--- Dados do plano ---");
         System.out.println("Nome: " + nome);
